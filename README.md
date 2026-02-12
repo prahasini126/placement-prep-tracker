@@ -1,5 +1,9 @@
 # 📌 Placement Preparation Tracker
 
+## 🚀 Live Demo
+
+- https://your-frontend-url.onrender.com
+
 A full-stack web application that helps students track their placement preparation by monitoring topics studied, confidence levels, and automatically identifying weak areas for focused revision.
 
 ---
