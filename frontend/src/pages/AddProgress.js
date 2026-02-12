@@ -58,7 +58,7 @@ export default function AddProgress() {
           <option>Aptitude</option>
         </select>
 
-        {/* Topic */}
+        
         <input
           placeholder="Topic (Linked List, OS, DBMS...)"
           className="w-full p-3 rounded-xl bg-white/70 border focus:ring-2 focus:ring-blue-500 outline-none"
@@ -66,7 +66,7 @@ export default function AddProgress() {
           onChange={(e) => setTopic(e.target.value)}
         />
 
-        {/* Time */}
+        
         <input
           type="number"
           placeholder="Time Spent (minutes)"
@@ -75,7 +75,7 @@ export default function AddProgress() {
           onChange={(e) => setTimeSpent(e.target.value)}
         />
 
-        {/* Confidence */}
+        
         <select
           className="w-full p-3 rounded-xl bg-white/70 border focus:ring-2 focus:ring-blue-500 outline-none"
           value={confidence}

@@ -16,7 +16,7 @@ export default function UserMenu() {
   return (
     <div className="relative">
 
-      {/* Avatar Button */}
+      
       <div
         onClick={() => setOpen(!open)}
         className="flex items-center gap-3 cursor-pointer hover:bg-gray-100 px-3 py-2 rounded-xl transition"

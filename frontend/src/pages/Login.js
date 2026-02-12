@@ -26,7 +26,7 @@ export default function Login() {
         password
       });
 
-      // ✅ STORE EVERYTHING (VERY IMPORTANT)
+      
       localStorage.setItem("token", res.data.token);
       localStorage.setItem("name", res.data.name);
       localStorage.setItem("userEmail", res.data.email); // ⭐ THIS FIXES YOUR BUG

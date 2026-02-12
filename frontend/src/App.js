@@ -11,17 +11,17 @@ import Sidebar from "./components/Sidebar";
 import Topbar from "./components/Topbar";
 
 
-// 🔐 Protect Routes
+
 function PrivateRoute({ children }) {
   const token = localStorage.getItem("token");
   return token ? children : <Navigate to="/login" />;
 }
 
 
-// ⭐ MAIN LAYOUT
+
 function AppLayout() {
 
-  // ⭐ AUTO LOAD THEME
+  
   useEffect(() => {
     const theme = localStorage.getItem("theme");
 
@@ -67,7 +67,7 @@ function AppLayout() {
 }
 
 
-// ⭐ ROOT
+//  ROOT
 export default function App() {
   return (
     <BrowserRouter>

@@ -14,8 +14,7 @@ export default function Dashboard() {
   const fetchData = async () => {
     try {
 
-      // ✅ DO NOT SEND EMAIL
-      // JWT already identifies the user
+    
 
       const progressRes = await axios.get("/get-progress");
       const weakRes = await axios.get("/weak-areas");
@@ -30,7 +29,7 @@ export default function Dashboard() {
     }
   };
 
-  // ✅ Focus Score
+ 
   const strongCount = progress.filter(
     (p) => Number(p.confidence) >= 3
   ).length;
@@ -43,7 +42,6 @@ export default function Dashboard() {
   return (
     <div className="space-y-8">
 
-      {/* Welcome */}
       <div className="backdrop-blur-xl bg-white/40 border border-white/30 shadow-lg rounded-2xl p-8">
         <h1 className="text-3xl font-bold text-gray-800">
           Welcome back, {localStorage.getItem("name")}
@@ -53,10 +51,9 @@ export default function Dashboard() {
         </p>
       </div>
 
-      {/* Cards */}
+      
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
 
-        {/* Focus */}
         <div className="backdrop-blur-xl bg-white/40 border border-white/30 shadow-lg rounded-2xl p-6">
           <p className="text-gray-500">Focus Score</p>
           <h2 className="text-4xl font-bold text-blue-600">
@@ -64,7 +61,7 @@ export default function Dashboard() {
           </h2>
         </div>
 
-        {/* Weak */}
+       
         <div className="backdrop-blur-xl bg-white/40 border border-white/30 shadow-lg rounded-2xl p-6">
           <p className="text-gray-500 mb-2">Weak Areas</p>
 
@@ -81,7 +78,7 @@ export default function Dashboard() {
           )}
         </div>
 
-        {/* Focus Today */}
+     
         <div className="backdrop-blur-xl bg-white/40 border border-white/30 shadow-lg rounded-2xl p-6">
           <p className="text-gray-500 mb-2">Today's Focus</p>
 
@@ -90,7 +87,7 @@ export default function Dashboard() {
           </p>
         </div>
 
-        {/* Recommendation */}
+        
         <div className="backdrop-blur-xl bg-white/40 border border-white/30 shadow-lg rounded-2xl p-6">
           <p className="text-gray-500 mb-2">Recommendation</p>
 
