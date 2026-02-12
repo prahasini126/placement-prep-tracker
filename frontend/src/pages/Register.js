@@ -34,24 +34,36 @@ export default function Register() {
   };
 
   return(
-    <div className="flex items-center justify-center min-h-screen bg-gray-100">
+    <div className="
+        flex items-center justify-center min-h-screen
+        bg-gradient-to-br from-[#020617] via-[#020617] to-[#0f172a]
+        text-white
+    ">
 
-      <div className="bg-white p-8 rounded-xl shadow-md w-96">
+      <div className="
+          backdrop-blur-xl
+          bg-white/5
+          border border-white/10
+          shadow-2xl
+          p-10
+          rounded-2xl
+          w-96
+      ">
 
-        <h2 className="text-2xl font-bold mb-6 text-center text-blue-600">
+        <h2 className="text-3xl font-bold mb-6 text-center text-blue-500">
           Create Account
         </h2>
 
         <input
           placeholder="Name"
-          className="w-full border p-2 rounded mb-4"
+          className="w-full p-3 mb-4 rounded-xl bg-white/10 border border-white/10 text-white placeholder-gray-400 outline-none"
           value={name}
           onChange={(e)=>setName(e.target.value)}
         />
 
         <input
           placeholder="Email"
-          className="w-full border p-2 rounded mb-4"
+          className="w-full p-3 mb-4 rounded-xl bg-white/10 border border-white/10 text-white placeholder-gray-400 outline-none"
           value={email}
           onChange={(e)=>setEmail(e.target.value)}
         />
@@ -59,21 +71,21 @@ export default function Register() {
         <input
           type="password"
           placeholder="Password"
-          className="w-full border p-2 rounded mb-6"
+          className="w-full p-3 mb-6 rounded-xl bg-white/10 border border-white/10 text-white placeholder-gray-400 outline-none"
           value={password}
           onChange={(e)=>setPassword(e.target.value)}
         />
 
         <button
           onClick={registerUser}
-          className="w-full bg-blue-600 text-white py-2 rounded hover:bg-blue-700"
+          className="w-full bg-blue-600 py-3 rounded-xl font-semibold hover:bg-blue-700 transition"
         >
           Register
         </button>
 
-        <p className="text-sm mt-4 text-center">
+        <p className="text-sm mt-4 text-center text-gray-400">
           Already have an account?{" "}
-          <Link to="/login" className="text-blue-600 font-semibold">
+          <Link to="/login" className="text-blue-500 font-semibold">
             Login
           </Link>
         </p>

@@ -26,16 +26,13 @@ export default function Login() {
         password
       });
 
-      
       localStorage.setItem("token", res.data.token);
       localStorage.setItem("name", res.data.name);
-      localStorage.setItem("userEmail", res.data.email); // ⭐ THIS FIXES YOUR BUG
+      localStorage.setItem("userEmail", res.data.email);
 
       navigate("/");
 
     } catch (err) {
-
-      console.log(err.response?.data || err);
 
       alert(
         err.response?.data?.message ||
@@ -48,21 +45,42 @@ export default function Login() {
   };
 
   return (
-    <div className="flex items-center justify-center min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100">
+    <div className="
+        flex items-center justify-center min-h-screen
+        bg-gradient-to-br from-[#020617] via-[#020617] to-[#0f172a]
+        text-white
+    ">
 
-      <div className="bg-white/80 backdrop-blur-xl p-8 rounded-2xl shadow-xl w-96 border border-white/40">
+      <div className="
+          backdrop-blur-xl
+          bg-white/5
+          border border-white/10
+          shadow-2xl
+          p-10
+          rounded-2xl
+          w-96
+      ">
 
-        <h2 className="text-3xl font-bold mb-2 text-center text-blue-600">
+        <h2 className="text-3xl font-bold mb-2 text-center text-blue-500">
           PrepSense
         </h2>
 
-        <p className="text-center text-gray-500 mb-6">
+        <p className="text-center text-gray-400 mb-6">
           Welcome back 👋
         </p>
 
         <input
           placeholder="Email"
-          className="w-full border border-gray-200 p-3 rounded-lg mb-4 focus:ring-2 focus:ring-blue-500 outline-none"
+          className="
+            w-full p-3 mb-4
+            rounded-xl
+            bg-white/10
+            border border-white/10
+            text-white
+            placeholder-gray-400
+            focus:ring-2 focus:ring-blue-500
+            outline-none
+          "
           value={email}
           onChange={(e)=>setEmail(e.target.value)}
         />
@@ -70,7 +88,16 @@ export default function Login() {
         <input
           type="password"
           placeholder="Password"
-          className="w-full border border-gray-200 p-3 rounded-lg mb-6 focus:ring-2 focus:ring-blue-500 outline-none"
+          className="
+            w-full p-3 mb-6
+            rounded-xl
+            bg-white/10
+            border border-white/10
+            text-white
+            placeholder-gray-400
+            focus:ring-2 focus:ring-blue-500
+            outline-none
+          "
           value={password}
           onChange={(e)=>setPassword(e.target.value)}
         />
@@ -78,14 +105,23 @@ export default function Login() {
         <button
           onClick={loginUser}
           disabled={loading}
-          className="w-full bg-blue-600 text-white py-3 rounded-lg font-semibold hover:bg-blue-700 transition disabled:opacity-50"
+          className="
+            w-full
+            bg-blue-600
+            py-3
+            rounded-xl
+            font-semibold
+            hover:bg-blue-700
+            transition
+            disabled:opacity-50
+          "
         >
           {loading ? "Logging in..." : "Login"}
         </button>
 
-        <p className="text-sm mt-5 text-center">
+        <p className="text-sm mt-5 text-center text-gray-400">
           New user?{" "}
-          <Link to="/register" className="text-blue-600 font-semibold hover:underline">
+          <Link to="/register" className="text-blue-500 font-semibold hover:underline">
             Register
           </Link>
         </p>
