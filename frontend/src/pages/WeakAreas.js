@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import axios from "axios";
+import axios from "../utils/axios";
 
 export default function WeakAreas() {
   const [weakAreas, setWeakAreas] = useState([]);
@@ -10,56 +10,40 @@ export default function WeakAreas() {
   }, []);
 
   const fetchWeakAreas = async () => {
-    const res = await axios.post(
-      "http://127.0.0.1:5000/weak-areas",
-      { email }
-    );
+    const res = await axios.get("/weak-areas");
     setWeakAreas(res.data);
-  };
-
-  const getBorderColor = (category) => {
-    if (category === "DSA") return "border-red-500";
-    if (category === "Core") return "border-blue-500";
-    if (category === "Aptitude") return "border-yellow-500";
-    return "border-gray-300";
   };
 
   return (
     <div>
-      <h1 className="text-2xl font-semibold mb-1">Weak Areas</h1>
-      <p className="text-sm text-gray-500 mb-6">
-        Topics that currently need your attention
-      </p>
+      <h1 className="text-3xl font-bold mb-6 text-gray-800">
+        Weak Areas
+      </h1>
 
       {weakAreas.length === 0 ? (
-        <div className="bg-white p-6 rounded-xl shadow-sm">
-          <p className="text-green-600 font-medium">
-            🎉 No weak areas right now. Keep going!
+        <div className="backdrop-blur-xl bg-white/40 border border-white/30 shadow-lg rounded-2xl p-8">
+          <p className="text-green-600 font-semibold">
+            No weak areas. Great job.
           </p>
         </div>
       ) : (
-        <div className="space-y-4">
+        <div className="grid md:grid-cols-2 gap-6">
           {weakAreas.map((w, i) => (
             <div
               key={i}
-              className={`bg-white p-4 rounded-xl shadow-sm border-l-4 ${getBorderColor(
-                w.category
-              )}`}
+              className="backdrop-blur-xl bg-white/40 border border-white/30 shadow-lg rounded-2xl p-6"
             >
-              <div className="flex justify-between items-center">
-                <div>
-                  <p className="font-semibold text-gray-800">
-                    {w.topic}
-                  </p>
-                  <p className="text-sm text-gray-500">
-                    {w.category}
-                  </p>
-                </div>
+              <p className="font-bold text-lg capitalize">
+                {w.topic}
+              </p>
 
-                <span className="text-xs bg-red-100 text-red-600 px-2 py-1 rounded">
-                  Confidence {w.confidence}
-                </span>
-              </div>
+              <p className="text-gray-500">
+                {w.category}
+              </p>
+
+              <span className="inline-block mt-3 bg-red-100 text-red-600 px-3 py-1 rounded-full text-sm font-semibold">
+                Confidence {w.confidence}
+              </span>
             </div>
           ))}
         </div>

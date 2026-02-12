@@ -1,5 +1,5 @@
 import { useState } from "react";
-import axios from "axios";
+import axios from "../utils/axios";
 import { useNavigate } from "react-router-dom";
 
 export default function AddProgress() {
@@ -18,34 +18,38 @@ export default function AddProgress() {
     }
 
     try {
-     await axios.post("http://127.0.0.1:5000/add-progress", {
-  email,
-  category,
-  topic: topic.trim().toLowerCase(),
-  time_spent: Number(timeSpent),
-  confidence: Number(confidence)
-});
+      await axios.post("/add-progress", {
+        email,
+        category,
+        topic: topic.trim().toLowerCase(),
+        time_spent: Number(timeSpent),
+        confidence: Number(confidence),
+      });
 
-
-
-      // 🔑 THIS LINE MAKES DASHBOARD UPDATE
       localStorage.setItem("refreshDashboard", "true");
 
-      navigate("/"); // go back to dashboard
+      navigate("/");
     } catch (err) {
+      console.log(err);
       alert("Error saving progress");
     }
   };
 
   return (
-    <div className="max-w-xl">
-      <h1 className="text-2xl font-semibold mb-6">
+    <div className="max-w-xl backdrop-blur-xl bg-white/40 border border-white/30 shadow-lg rounded-2xl p-8">
+      <h1 className="text-2xl font-bold mb-2 text-gray-800">
         Add Daily Progress
       </h1>
 
-      <div className="space-y-4">
+      <p className="text-gray-500 mb-6">
+        Track what you studied today
+      </p>
+
+      <div className="space-y-5">
+
+        {/* Category */}
         <select
-          className="w-full border p-2 rounded"
+          className="w-full p-3 rounded-xl bg-white/70 border focus:ring-2 focus:ring-blue-500 outline-none"
           value={category}
           onChange={(e) => setCategory(e.target.value)}
         >
@@ -54,38 +58,43 @@ export default function AddProgress() {
           <option>Aptitude</option>
         </select>
 
+        {/* Topic */}
         <input
-          placeholder="Topic (e.g. Dynamic Programming)"
-          className="w-full border p-2 rounded"
+          placeholder="Topic (Linked List, OS, DBMS...)"
+          className="w-full p-3 rounded-xl bg-white/70 border focus:ring-2 focus:ring-blue-500 outline-none"
           value={topic}
           onChange={(e) => setTopic(e.target.value)}
         />
 
+        {/* Time */}
         <input
+          type="number"
           placeholder="Time Spent (minutes)"
-          className="w-full border p-2 rounded"
+          className="w-full p-3 rounded-xl bg-white/70 border focus:ring-2 focus:ring-blue-500 outline-none"
           value={timeSpent}
           onChange={(e) => setTimeSpent(e.target.value)}
         />
 
+        {/* Confidence */}
         <select
-          className="w-full border p-2 rounded"
+          className="w-full p-3 rounded-xl bg-white/70 border focus:ring-2 focus:ring-blue-500 outline-none"
           value={confidence}
           onChange={(e) => setConfidence(e.target.value)}
         >
-          <option value={1}>Confidence 1 (Very Weak)</option>
-          <option value={2}>Confidence 2 (Weak)</option>
-          <option value={3}>Confidence 3 (Average)</option>
-          <option value={4}>Confidence 4 (Good)</option>
-          <option value={5}>Confidence 5 (Strong)</option>
+          <option value={1}>1 – Very Weak</option>
+          <option value={2}>2 – Weak</option>
+          <option value={3}>3 – Average</option>
+          <option value={4}>4 – Good</option>
+          <option value={5}>5 – Strong</option>
         </select>
 
         <button
           onClick={saveProgress}
-          className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 transition"
+          className="w-full bg-blue-600 text-white py-3 rounded-xl font-semibold hover:bg-blue-700 transition"
         >
           Save Progress
         </button>
+
       </div>
     </div>
   );

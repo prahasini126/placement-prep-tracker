@@ -1,52 +1,86 @@
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
+import { useEffect } from "react";
+
 import Dashboard from "./pages/Dashboard";
 import AddProgress from "./pages/AddProgress";
 import WeakAreas from "./pages/WeakAreas";
+import Login from "./pages/Login";
+import Register from "./pages/Register";
 
-function App() {
+import Sidebar from "./components/Sidebar";
+import Topbar from "./components/Topbar";
+
+
+// 🔐 Protect Routes
+function PrivateRoute({ children }) {
+  const token = localStorage.getItem("token");
+  return token ? children : <Navigate to="/login" />;
+}
+
+
+// ⭐ MAIN LAYOUT
+function AppLayout() {
+
+  // ⭐ AUTO LOAD THEME
+  useEffect(() => {
+    const theme = localStorage.getItem("theme");
+
+    if (theme === "dark") {
+      document.documentElement.classList.add("dark");
+    }
+  }, []);
+
   return (
-    <BrowserRouter>
-    <div className="h-14 bg-white border-b flex items-center justify-between px-6">
-  <h1 className="text-xl font-bold text-blue-600 tracking-wide">
-    PrepSense
-  </h1>
+    <div className="flex bg-gradient-to-br from-blue-50 to-purple-100 dark:from-gray-900 dark:to-gray-950 min-h-screen">
 
-  <div className="text-sm text-gray-600">
-    Hi, Prahasini
-  </div>
-</div>
+      <Sidebar />
 
-      <div className="flex min-h-screen bg-gray-100">
-        {/* Sidebar */}
-        <div className="w-64 bg-white border-r">
-          <div className="p-6 text-xl font-bold text-blue-600">
-            PrepSense
-          </div>
+      <div className="flex-1">
+        <Topbar />
 
-          <nav className="px-4 space-y-3">
-            <a href="/" className="block text-gray-700 hover:text-blue-600">
-              Dashboard
-            </a>
-            <a href="/add" className="block text-gray-700 hover:text-blue-600">
-              Add Progress
-            </a>
-            <a href="/weak" className="block text-gray-700 hover:text-blue-600">
-              Weak Areas
-            </a>
-          </nav>
-        </div>
-
-        {/* Main Content */}
-        <div className="flex-1 p-8">
+        <div className="p-8">
           <Routes>
-            <Route path="/" element={<Dashboard />} />
-            <Route path="/add" element={<AddProgress />} />
-            <Route path="/weak" element={<WeakAreas />} />
+
+            <Route path="/" element={
+              <PrivateRoute>
+                <Dashboard />
+              </PrivateRoute>
+            } />
+
+            <Route path="/add" element={
+              <PrivateRoute>
+                <AddProgress />
+              </PrivateRoute>
+            } />
+
+            <Route path="/weak" element={
+              <PrivateRoute>
+                <WeakAreas />
+              </PrivateRoute>
+            } />
+
           </Routes>
         </div>
       </div>
-    </BrowserRouter>
+    </div>
   );
 }
 
-export default App;
+
+// ⭐ ROOT
+export default function App() {
+  return (
+    <BrowserRouter>
+
+      <Routes>
+
+        <Route path="/login" element={<Login />} />
+        <Route path="/register" element={<Register />} />
+
+        <Route path="/*" element={<AppLayout />} />
+
+      </Routes>
+
+    </BrowserRouter>
+  );
+}

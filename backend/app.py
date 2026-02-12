@@ -1,24 +1,33 @@
 from flask import Flask, request, jsonify
 from flask_cors import CORS
-from db import users_collection
+from db import users_collection, progress_collection
 import bcrypt
-from datetime import datetime
-from db import progress_collection
+from dotenv import load_dotenv
+import os
+
+load_dotenv()
+
+from flask_jwt_extended import (
+    JWTManager,
+    create_access_token,
+    jwt_required,
+    get_jwt_identity
+)
 
 app = Flask(__name__)
 CORS(app)
 
-@app.route("/register", methods=["GET", "POST"])
+# ✅ JWT Setup
+app.config["JWT_SECRET_KEY"] = os.getenv("JWT_SECRET")
+jwt = JWTManager(app)
+
+
+# ==============================
+# REGISTER
+# ==============================
+
+@app.route("/register", methods=["POST"])
 def register():
-    if request.method == "GET":
-        return jsonify({
-            "message": "Use POST to register",
-            "sample": {
-                "name": "Prahasini",
-                "email": "praha@gmail.com",
-                "password": "123456"
-            }
-        })
 
     data = request.json
 
@@ -26,11 +35,15 @@ def register():
     email = data.get("email")
     password = data.get("password")
 
+    if not name or not email or not password:
+        return jsonify({"message": "All fields required"}), 400
+
     if users_collection.find_one({"email": email}):
         return jsonify({"message": "User already exists"}), 400
 
     hashed_password = bcrypt.hashpw(
-        password.encode("utf-8"), bcrypt.gensalt()
+        password.encode("utf-8"),
+        bcrypt.gensalt()
     )
 
     users_collection.insert_one({
@@ -41,8 +54,14 @@ def register():
 
     return jsonify({"message": "User registered successfully"}), 201
 
+
+# ==============================
+# LOGIN
+# ==============================
+
 @app.route("/login", methods=["POST"])
 def login():
+
     data = request.json
 
     email = data.get("email")
@@ -56,24 +75,39 @@ def login():
     if not bcrypt.checkpw(password.encode("utf-8"), user["password"]):
         return jsonify({"message": "Invalid password"}), 401
 
+    # ✅ CREATE TOKEN
+    access_token = create_access_token(identity=email)
+
     return jsonify({
-        "message": "Login successful",
+        "token": access_token,
         "name": user["name"],
         "email": user["email"]
     }), 200
 
 
+# ==============================
+# ADD / UPDATE PROGRESS
+# ==============================
+
 @app.route("/add-progress", methods=["POST"])
+@jwt_required()
 def add_progress():
+
+    email = get_jwt_identity()   # NEVER trust frontend email
+
     data = request.json
 
-    email = data.get("email")
     category = data.get("category")
-    topic = data.get("topic").strip().lower()
-    confidence = int(data.get("confidence"))
+    topic = data.get("topic")
+    confidence = data.get("confidence")
     time_spent = data.get("time_spent")
 
-    # 🔑 LATEST UPDATE WINS (update if exists, else insert)
+    if not category or not topic or confidence is None:
+        return jsonify({"message": "Missing fields"}), 400
+
+    topic = topic.strip().lower()
+    confidence = int(confidence)
+
     progress_collection.update_one(
         {
             "email": email,
@@ -93,10 +127,15 @@ def add_progress():
     return jsonify({"message": "Progress updated"}), 200
 
 
-@app.route("/get-progress", methods=["POST"])
+# ==============================
+# GET PROGRESS
+# ==============================
+
+@app.route("/get-progress", methods=["GET"])
+@jwt_required()
 def get_progress():
-    data = request.json
-    email = data.get("email")
+
+    email = get_jwt_identity()
 
     progress_list = list(progress_collection.find(
         {"email": email},
@@ -105,10 +144,16 @@ def get_progress():
 
     return jsonify(progress_list), 200
 
-@app.route("/weak-areas", methods=["POST"])
+
+# ==============================
+# WEAK AREAS
+# ==============================
+
+@app.route("/weak-areas", methods=["GET"])
+@jwt_required()
 def weak_areas():
-    data = request.json
-    email = data.get("email")
+
+    email = get_jwt_identity()
 
     weak = list(progress_collection.find(
         {
@@ -125,10 +170,16 @@ def weak_areas():
 
     return jsonify(weak), 200
 
-@app.route("/today-focus", methods=["POST"])
+
+# ==============================
+# TODAY FOCUS
+# ==============================
+
+@app.route("/today-focus", methods=["GET"])
+@jwt_required()
 def today_focus():
-    data = request.json
-    email = data.get("email")
+
+    email = get_jwt_identity()
 
     weak = list(progress_collection.find(
         {
@@ -140,14 +191,14 @@ def today_focus():
     if not weak:
         return jsonify({"focus": "You're doing great!"}), 200
 
-    focus = weak[0]  # simple & predictable
+    focus = weak[0]
 
     return jsonify({
         "focus": f"{focus['category']} – {focus['topic']}"
     }), 200
 
 
-
+# ==============================
 
 if __name__ == "__main__":
     app.run(debug=True)
