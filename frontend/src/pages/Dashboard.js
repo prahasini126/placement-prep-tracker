@@ -13,9 +13,6 @@ export default function Dashboard() {
 
   const fetchData = async () => {
     try {
-
-    
-
       const progressRes = await axios.get("/get-progress");
       const weakRes = await axios.get("/weak-areas");
       const focusRes = await axios.get("/today-focus");
@@ -29,7 +26,6 @@ export default function Dashboard() {
     }
   };
 
- 
   const strongCount = progress.filter(
     (p) => Number(p.confidence) >= 3
   ).length;
@@ -42,28 +38,29 @@ export default function Dashboard() {
   return (
     <div className="space-y-8">
 
-      <div className="backdrop-blur-xl bg-white/40 border border-white/30 shadow-lg rounded-2xl p-8">
-        <h1 className="text-3xl font-bold text-gray-800">
+      {/* Welcome Card */}
+      <div className="backdrop-blur-xl bg-white/80 dark:bg-gray-900/70 border border-gray-200 dark:border-gray-700 shadow-lg rounded-2xl p-8">
+        <h1 className="text-3xl font-bold text-gray-800 dark:text-gray-100">
           Welcome back, {localStorage.getItem("name")}
         </h1>
-        <p className="text-gray-500 mt-1">
+        <p className="text-gray-500 dark:text-gray-300 mt-1">
           Here is your preparation overview.
         </p>
       </div>
 
-      
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
 
-        <div className="backdrop-blur-xl bg-white/40 border border-white/30 shadow-lg rounded-2xl p-6">
-          <p className="text-gray-500">Focus Score</p>
+        {/* Focus Score */}
+        <div className="backdrop-blur-xl bg-white/80 dark:bg-gray-900/70 border border-gray-200 dark:border-gray-700 shadow-lg rounded-2xl p-6">
+          <p className="text-gray-500 dark:text-gray-300">Focus Score</p>
           <h2 className="text-4xl font-bold text-blue-600">
             {focusScore}%
           </h2>
         </div>
 
-       
-        <div className="backdrop-blur-xl bg-white/40 border border-white/30 shadow-lg rounded-2xl p-6">
-          <p className="text-gray-500 mb-2">Weak Areas</p>
+        {/* Weak Areas */}
+        <div className="backdrop-blur-xl bg-white/80 dark:bg-gray-900/70 border border-gray-200 dark:border-gray-700 shadow-lg rounded-2xl p-6">
+          <p className="text-gray-500 dark:text-gray-300 mb-2">Weak Areas</p>
 
           {weakAreas.length === 0 ? (
             <p className="text-green-600 font-semibold">
@@ -78,28 +75,32 @@ export default function Dashboard() {
           )}
         </div>
 
-     
-        <div className="backdrop-blur-xl bg-white/40 border border-white/30 shadow-lg rounded-2xl p-6">
-          <p className="text-gray-500 mb-2">Today's Focus</p>
+        {/* Today Focus */}
+        <div className="backdrop-blur-xl bg-white/80 dark:bg-gray-900/70 border border-gray-200 dark:border-gray-700 shadow-lg rounded-2xl p-6">
+          <p className="text-gray-500 dark:text-gray-300 mb-2">
+            Today's Focus
+          </p>
 
           <p className="text-lg font-bold text-purple-600">
             {focusToday || "You're doing great!"}
           </p>
         </div>
 
-        
-        <div className="backdrop-blur-xl bg-white/40 border border-white/30 shadow-lg rounded-2xl p-6">
-          <p className="text-gray-500 mb-2">Recommendation</p>
+        {/* Recommendation */}
+        <div className="backdrop-blur-xl bg-white/80 dark:bg-gray-900/70 border border-gray-200 dark:border-gray-700 shadow-lg rounded-2xl p-6">
+          <p className="text-gray-500 dark:text-gray-300 mb-2">
+            Recommendation
+          </p>
 
           {weakAreas.length > 0 ? (
-            <p className="font-semibold">
+            <p className="font-semibold text-gray-800 dark:text-gray-100">
               Revise{" "}
               <span className="text-red-600">
                 {weakAreas[0].topic}
               </span>
             </p>
           ) : (
-            <p className="font-semibold">
+            <p className="font-semibold text-gray-800 dark:text-gray-100">
               Keep going, you are on track.
             </p>
           )}

@@ -3,8 +3,8 @@ import axios from "../utils/axios";
 import { useNavigate } from "react-router-dom";
 
 export default function AddProgress() {
+
   const navigate = useNavigate();
-  const email = localStorage.getItem("userEmail");
 
   const [category, setCategory] = useState("DSA");
   const [topic, setTopic] = useState("");
@@ -19,7 +19,6 @@ export default function AddProgress() {
 
     try {
       await axios.post("/add-progress", {
-        email,
         category,
         topic: topic.trim().toLowerCase(),
         time_spent: Number(timeSpent),
@@ -27,29 +26,28 @@ export default function AddProgress() {
       });
 
       localStorage.setItem("refreshDashboard", "true");
-
       navigate("/");
+
     } catch (err) {
-      console.log(err);
       alert("Error saving progress");
     }
   };
 
   return (
-    <div className="max-w-xl backdrop-blur-xl bg-white/40 border border-white/30 shadow-lg rounded-2xl p-8">
-      <h1 className="text-2xl font-bold mb-2 text-gray-800">
+    <div className="max-w-xl backdrop-blur-xl bg-white/80 dark:bg-gray-900/70 border border-gray-200 dark:border-gray-700 shadow-lg rounded-2xl p-8">
+
+      <h1 className="text-2xl font-bold mb-2 text-gray-800 dark:text-gray-100">
         Add Daily Progress
       </h1>
 
-      <p className="text-gray-500 mb-6">
+      <p className="text-gray-500 dark:text-gray-300 mb-6">
         Track what you studied today
       </p>
 
       <div className="space-y-5">
 
-        {/* Category */}
         <select
-          className="w-full p-3 rounded-xl bg-white/70 border focus:ring-2 focus:ring-blue-500 outline-none"
+          className="w-full p-3 rounded-xl bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-600 text-gray-800 dark:text-gray-100"
           value={category}
           onChange={(e) => setCategory(e.target.value)}
         >
@@ -58,26 +56,23 @@ export default function AddProgress() {
           <option>Aptitude</option>
         </select>
 
-        
         <input
-          placeholder="Topic (Linked List, OS, DBMS...)"
-          className="w-full p-3 rounded-xl bg-white/70 border focus:ring-2 focus:ring-blue-500 outline-none"
+          placeholder="Topic"
+          className="w-full p-3 rounded-xl bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-600 text-gray-800 dark:text-gray-100"
           value={topic}
           onChange={(e) => setTopic(e.target.value)}
         />
 
-        
         <input
           type="number"
           placeholder="Time Spent (minutes)"
-          className="w-full p-3 rounded-xl bg-white/70 border focus:ring-2 focus:ring-blue-500 outline-none"
+          className="w-full p-3 rounded-xl bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-600 text-gray-800 dark:text-gray-100"
           value={timeSpent}
           onChange={(e) => setTimeSpent(e.target.value)}
         />
 
-        
         <select
-          className="w-full p-3 rounded-xl bg-white/70 border focus:ring-2 focus:ring-blue-500 outline-none"
+          className="w-full p-3 rounded-xl bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-600 text-gray-800 dark:text-gray-100"
           value={confidence}
           onChange={(e) => setConfidence(e.target.value)}
         >
