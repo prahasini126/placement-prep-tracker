@@ -11,31 +11,34 @@ import Sidebar from "./components/Sidebar";
 import Topbar from "./components/Topbar";
 
 
-
 function PrivateRoute({ children }) {
   const token = localStorage.getItem("token");
   return token ? children : <Navigate to="/login" />;
 }
 
 
-
 function AppLayout() {
 
-  
+  // ⭐ THEME LOADER
   useEffect(() => {
-    const theme = localStorage.getItem("theme");
 
-    if (theme === "dark") {
+    const savedTheme = localStorage.getItem("theme") ;
+
+    if(savedTheme === "dark"){
       document.documentElement.classList.add("dark");
+    }else{
+      document.documentElement.classList.remove("dark");
     }
+
   }, []);
 
   return (
-    <div className="flex bg-gradient-to-br from-blue-50 to-purple-100 dark:from-gray-900 dark:to-gray-950 min-h-screen">
+    <div className="flex min-h-screen">
 
       <Sidebar />
 
       <div className="flex-1">
+
         <Topbar />
 
         <div className="p-8">
@@ -67,7 +70,7 @@ function AppLayout() {
 }
 
 
-//  ROOT
+// ROOT
 export default function App() {
   return (
     <BrowserRouter>

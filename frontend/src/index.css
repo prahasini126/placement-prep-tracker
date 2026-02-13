@@ -2,24 +2,11 @@
 @tailwind components;
 @tailwind utilities;
 
-body {
-  background: linear-gradient(135deg,#eef2ff,#e0f2fe,#f0f9ff);
-  min-height:100vh;
-  @apply bg-gray-100 text-gray-900;
+/* Light + Dark background */
+body{
+  @apply bg-gray-50 text-gray-900;
 }
 
-.glass {
-  background: rgba(255,255,255,0.6);
-  backdrop-filter: blur(14px);
-  -webkit-backdrop-filter: blur(14px);
-  border-radius: 18px;
-  border: 1px solid rgba(255,255,255,0.3);
-  box-shadow: 0 8px 32px rgba(0,0,0,0.05);
-  @apply backdrop-blur-xl bg-white/40 dark:bg-gray-900/40 border border-white/30 dark:border-gray-700 shadow-lg;
-}
-
-.dark body {
+.dark body{
   @apply bg-gray-950 text-gray-100;
 }
-
-
